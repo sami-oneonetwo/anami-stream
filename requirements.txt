@@ -1,4 +1,4 @@
-opencv-python-headless>=4.8.0
+# opencv installed via system package: sudo apt install python3-opencv
 fastapi>=0.104.1
 uvicorn[standard]>=0.24.0
 pydantic>=2.5.0
