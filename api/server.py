@@ -54,9 +54,9 @@ def create_app(capture_manager: CaptureManager, config: dict) -> FastAPI:
         allow_headers=["*"],
     )
 
-    api_app.include_router(stream_router)
-    api_app.include_router(control_router)
-    api_app.include_router(health_router)
+    api_app.include_router(stream_router, prefix="/stream")
+    api_app.include_router(control_router, prefix="/stream")
+    api_app.include_router(health_router, prefix="/stream")
 
     logger.info("FastAPI app created and configured")
     return api_app
@@ -73,9 +73,10 @@ def start_api_server(
     app = create_app(capture_manager, config)
 
     logger.info(f"Starting stream server on http://{host}:{port}")
-    logger.info(f"  - MJPEG stream:  http://{host}:{port}/stream")
-    logger.info(f"  - Snapshot:      http://{host}:{port}/snapshot")
-    logger.info(f"  - Health:        http://{host}:{port}/api/health")
+    logger.info(f"  - MJPEG stream:  http://{host}:{port}/stream/feed")
+    logger.info(f"  - Snapshot:      http://{host}:{port}/stream/snapshot")
+    logger.info(f"  - Health:        http://{host}:{port}/stream/health")
+    logger.info(f"  - Config:        http://{host}:{port}/stream/config")
     logger.info(f"  - Docs:          http://{host}:{port}/docs")
 
     uvicorn.run(

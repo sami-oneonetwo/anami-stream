@@ -10,7 +10,7 @@ from capture.capture_manager import CaptureManager
 router = APIRouter()
 
 
-@router.post("/api/quality", response_model=SuccessResponse)
+@router.post("/quality", response_model=SuccessResponse)
 async def set_quality(
     body: QualityRequest,
     cm: CaptureManager = Depends(get_capture_manager),

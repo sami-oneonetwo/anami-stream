@@ -1,7 +1,7 @@
 """
 MJPEG stream and snapshot routes.
 
-GET /stream    — multipart/x-mixed-replace MJPEG stream (works as <img src>)
+GET /feed      — multipart/x-mixed-replace MJPEG stream (works as <img src>)
 GET /snapshot  — single JPEG frame download
 """
 
@@ -18,12 +18,12 @@ router = APIRouter()
 _FRAME_INTERVAL = 1 / 30  # 30fps cap — consumers see whatever the device produces
 
 
-@router.get("/stream")
+@router.get("/feed")
 async def mjpeg_stream(cm: CaptureManager = Depends(get_capture_manager)):
     """
     MJPEG multipart stream.
 
-    Browsers can consume this directly as <img src="/stream">.
+    Browsers can consume this directly as <img src="/feed">.
     Latency is sub-second; no JavaScript decoder required.
     """
     async def generate():

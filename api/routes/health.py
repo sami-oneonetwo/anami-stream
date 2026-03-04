@@ -9,7 +9,7 @@ from capture.capture_manager import CaptureManager
 router = APIRouter()
 
 
-@router.get("/api/health", response_model=HealthResponse)
+@router.get("/health", response_model=HealthResponse)
 async def get_health(cm: CaptureManager = Depends(get_capture_manager)):
     return HealthResponse(
         status="ok" if cm.device_open else "degraded",
@@ -19,7 +19,7 @@ async def get_health(cm: CaptureManager = Depends(get_capture_manager)):
     )
 
 
-@router.get("/api/config", response_model=StreamConfigResponse)
+@router.get("/config", response_model=StreamConfigResponse)
 async def get_config(cm: CaptureManager = Depends(get_capture_manager)):
     return StreamConfigResponse(
         quality=cm.quality,
