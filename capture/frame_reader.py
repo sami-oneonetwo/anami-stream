@@ -35,11 +35,17 @@ class FrameReaderThread(threading.Thread):
         consecutive_failures = 0
 
         while not self._stop_event.is_set():
-            # Apply pending quality change before reading next frame
+            # Quality change: release and reopen VideoCapture cleanly.
+            # cap.set(WIDTH/HEIGHT) mid-stream causes V4L2 to restart the pipeline,
+            # producing corrupted frames that break the MJPEG multipart boundary.
             if self._cm._quality_changed.is_set():
+                self._cm._cap.release()
+                self._cm._cap = cv2.VideoCapture(self._cm._device_index)
                 self._cm._apply_quality()
                 self._cm._quality_changed.clear()
-                logger.info(f"Quality applied: {self._cm.quality}")
+                consecutive_failures = 0
+                logger.info(f"Quality applied: {self._cm.quality} ({self._cm.resolution})")
+                continue
 
             ret, frame = self._cm._cap.read()
 
