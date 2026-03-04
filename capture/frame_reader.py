@@ -40,7 +40,8 @@ class FrameReaderThread(threading.Thread):
             # producing corrupted frames that break the MJPEG multipart boundary.
             if self._cm._quality_changed.is_set():
                 self._cm._cap.release()
-                self._cm._cap = cv2.VideoCapture(self._cm._device_index)
+                time.sleep(0.5)  # Let V4L2 finish releasing before reopening
+                self._cm._cap = cv2.VideoCapture(self._cm._device_index, cv2.CAP_V4L2)
                 self._cm._apply_quality()
                 self._cm._quality_changed.clear()
                 consecutive_failures = 0

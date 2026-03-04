@@ -58,7 +58,7 @@ class CaptureManager:
         import cv2
         from capture.frame_reader import FrameReaderThread
 
-        self._cap = cv2.VideoCapture(self._device_index)
+        self._cap = cv2.VideoCapture(self._device_index, cv2.CAP_V4L2)
         if not self._cap.isOpened():
             logger.warning(
                 f"Capture device {self._device_index} could not be opened. "
